@@ -57,7 +57,7 @@ namespace SleepyBerry
 
         private Task ReadyAsync()
         {
-            Console.WriteLine($"Connected as -> [] :)");
+            Console.WriteLine($"Connected as -> [SleepyBerry#1084] :D");
             return Task.CompletedTask;
         }
 
@@ -68,7 +68,7 @@ namespace SleepyBerry
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
 
-            if (message.Content == ".hello")
+            if (message.Content == "!hello")
             {
                 await message.Channel.SendMessageAsync("world!");
             }  
