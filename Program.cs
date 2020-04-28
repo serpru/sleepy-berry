@@ -27,7 +27,7 @@ namespace SleepyBerry
                 _logLevel = args[0];
             } 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("logs/csharpi.log", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("logs/sleepyberry.log", rollingInterval: RollingInterval.Day)
                 .WriteTo.Console()
                 .CreateLogger();
 
