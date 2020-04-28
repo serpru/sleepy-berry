@@ -14,7 +14,40 @@ namespace SleepyBerry.Modules
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
     public class ExampleCommands : ModuleBase
     {
+        [Command("help")]
+        public async Task HelpCommand()
+        {
+            // initialize empty string builder for reply
+            var sb = new StringBuilder();
+
+            // get user info from the Context
+            var user = Context.User;
+
+            // list of available commands
+            List<String> coms = new List<String>{
+                "!ask - ask me a question!",
+                "!help - get list of available commands",
+                "!hello - say hi to me!",
+                "I've hidden a few more commands, mind finding them all? :smirk:"
+            };
+
+            // build out the reply
+            sb.AppendLine($"These are my available commands:");
+            sb.AppendLine();
+            for (int i = 0; i < coms.Count-1; i++)
+            {
+                sb.AppendLine(coms[i]);
+            }
+            sb.AppendLine();
+            sb.AppendLine(coms[coms.Count-1]);
+
+            // send simple string reply
+            await ReplyAsync(sb.ToString());
+
+        }
+
         [Command("hello")]
+        [Alias("hi", "sup")]
         public async Task HelloCommand()
         {
             // initialize empty string builder for reply
@@ -22,10 +55,20 @@ namespace SleepyBerry.Modules
 
             // get user info from the Context
             var user = Context.User;
-            
+
+            // list of possible greetings
+            List<String> greet = new List<String>{
+                "Howdy",
+                "Greetings",
+                "Hello",
+                "Hi",
+                "Sup"
+            };
+
+            String ranGreet = greet[new Random().Next(greet.Count - 1)];
+
             // build out the reply
-            sb.AppendLine($"You are -> ["+ user +"]");
-            sb.AppendLine("I must now say, World!");
+            sb.AppendLine(ranGreet + $", " + user.Username + "!");
 
             // send simple string reply
             await ReplyAsync(sb.ToString());
@@ -56,9 +99,9 @@ namespace SleepyBerry.Modules
             //replies.Add("zzz...");
 
             // time to add some options to the embed (like color and title)
-            embed.WithColor(new Color(0, 255,0));
+            embed.WithColor(new Color(0, 255, 0));
             embed.Title = "Welcome to the 8-ball!";
-            
+
             // we can get lots of information from the Context that is passed into the commands
             // here I'm setting up the preface with the user's name and a comma
             sb.AppendLine(user + $",");
@@ -70,40 +113,40 @@ namespace SleepyBerry.Modules
                 // if no question is asked (args are null), reply with the below text
                 sb.AppendLine("Sorry, can't answer a question you didn't ask!");
             }
-            else 
+            else
             {
                 // if we have a question, let's give an answer!
                 // get a random number to index our list with (arrays start at zero so we subtract 1 from the count)
                 var answer = replies[new Random().Next(replies.Count - 1)];
-                
+
                 // build out our reply with the handy StringBuilder
                 sb.AppendLine($"You asked: [" + args.ToString() + "]...");
                 sb.AppendLine();
                 sb.AppendLine($"...your answer is [" + answer.ToString() + "]");
 
                 // bonus - let's switch out the reply and change the color based on it
-                switch (answer) 
+                switch (answer)
                 {
                     case "yes":
-                    {
-                        embed.WithColor(new Color(0, 255, 0));
-                        break;
-                    }
+                        {
+                            embed.WithColor(new Color(0, 255, 0));
+                            break;
+                        }
                     case "no":
-                    {
-                        embed.WithColor(new Color(255, 0, 0));
-                        break;
-                    }
+                        {
+                            embed.WithColor(new Color(255, 0, 0));
+                            break;
+                        }
                     case "maybe":
-                    {
-                        embed.WithColor(new Color(255,255,0));
-                        break;
-                    }
+                        {
+                            embed.WithColor(new Color(255, 255, 0));
+                            break;
+                        }
                     case "hazzzzy....":
-                    {
-                        embed.WithColor(new Color(255,0,255));
-                        break;
-                    }
+                        {
+                            embed.WithColor(new Color(255, 0, 255));
+                            break;
+                        }
                 }
             }
 
@@ -112,6 +155,18 @@ namespace SleepyBerry.Modules
 
             // this will reply with the embed
             await ReplyAsync(null, false, embed.Build());
+        }
+
+        [Command("shithole")]
+        public async Task Shithole() {
+            // initialize empty string builder for reply
+            var sb = new StringBuilder();
+
+            // build out the reply - a Left 4 Dead 2 reference ;)
+            sb.AppendLine($"Yeah, it's a shithole.");
+
+            // send simple string reply
+            await ReplyAsync(sb.ToString());
         }
     }
 }

@@ -6,6 +6,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace SleepyBerry.Services
 {
@@ -16,6 +17,7 @@ namespace SleepyBerry.Services
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
+        private readonly ILogger _logger;
 
         public CommandHandler(IServiceProvider services)
         {
@@ -25,6 +27,7 @@ namespace SleepyBerry.Services
             _commands = services.GetRequiredService<CommandService>();
             _client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
+            _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             
             // take action when we execute a command
             _commands.CommandExecuted += CommandExecutedAsync;
@@ -76,7 +79,7 @@ namespace SleepyBerry.Services
             // if a command isn't found, log that info to console and exit this method
             if (!command.IsSpecified)
             {
-                System.Console.WriteLine($"Command failed to execute for [" + context.User.Username + "] <-> [" + result.ErrorReason + "]!");
+                _logger.LogError($"Command failed to execute for [" + context.User.Username + "] <-> [" + result.ErrorReason + "]!");
                 return;
             }
                 
@@ -84,7 +87,7 @@ namespace SleepyBerry.Services
             // log success to the console and exit this method
             if (result.IsSuccess)
             {
-                System.Console.WriteLine($"Command [" + command.Value.Name + "] executed for -> [" + context.User.Username + "]");
+                _logger.LogInformation($"Command [" + command.Value.Name + "] executed for -> [" + context.User.Username + "]");
                 return;
             }
                 
