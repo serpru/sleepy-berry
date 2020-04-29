@@ -63,7 +63,7 @@ namespace SleepyBerry
                 await client.StartAsync();
 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
-                await services.GetRequiredService<CommandHandler>().InitializeAsync();
+                await services.GetRequiredService<CommandHandler>().InitializeAsync(); 
 
                 await Task.Delay(-1);
             }
@@ -75,7 +75,7 @@ namespace SleepyBerry
         {
             // this returns a ServiceProvider that is used later to call for those services
             // we can add types we have access to here, hence adding the new using statement:
-            // using csharpi.Services;
+            // using SleepyBerry.Services;
             // the config we build is also added, which comes in handy for setting the command prefix!
             var services = new ServiceCollection()
                 .AddSingleton(_config)
@@ -83,6 +83,7 @@ namespace SleepyBerry
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
+                .AddSingleton<WeatherService>()
                 .AddLogging(configure => configure.AddSerilog());
 
             if (!string.IsNullOrEmpty(_logLevel)) 

@@ -27,9 +27,11 @@ namespace SleepyBerry.Modules
 
             // list of available commands
             List<String> coms = new List<String>{
-                "!ask - ask me a question!",
+                "!ask [Question] - ask me a question!",
                 "!help - get list of available commands",
                 "!hello - say hi to me!",
+                "!wth [City] - show the current weather of the city you entered",
+                "!temp [City] - show only the current weather of the city you entered"
             };
 
             // build out the reply
