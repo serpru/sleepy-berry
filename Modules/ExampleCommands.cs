@@ -14,7 +14,9 @@ namespace SleepyBerry.Modules
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
     public class ExampleCommands : ModuleBase
     {
+        // Lists all commands
         [Command("help")]
+        [Summary("Shows all commands")]
         public async Task HelpCommand()
         {
             // initialize empty string builder for reply
@@ -28,7 +30,6 @@ namespace SleepyBerry.Modules
                 "!ask - ask me a question!",
                 "!help - get list of available commands",
                 "!hello - say hi to me!",
-                "I've hidden a few more commands, mind finding them all? :smirk:"
             };
 
             // build out the reply
@@ -38,14 +39,13 @@ namespace SleepyBerry.Modules
             {
                 sb.AppendLine(coms[i]);
             }
-            sb.AppendLine();
-            sb.AppendLine(coms[coms.Count-1]);
 
             // send simple string reply
             await ReplyAsync(sb.ToString());
 
         }
 
+        // Respond with a greeting
         [Command("hello")]
         [Alias("hi", "sup")]
         public async Task HelloCommand()
@@ -74,6 +74,7 @@ namespace SleepyBerry.Modules
             await ReplyAsync(sb.ToString());
         }
 
+        // Receive simple answer for question provided
         [Command("8ball")]
         [Alias("ask")]
         [RequireUserPermission(GuildPermission.KickMembers)]
@@ -157,7 +158,9 @@ namespace SleepyBerry.Modules
             await ReplyAsync(null, false, embed.Build());
         }
 
+        // !shithole -> Yeah it's a shithole
         [Command("shithole")]
+        [Summary("L4D2 reference")]
         public async Task Shithole() {
             // initialize empty string builder for reply
             var sb = new StringBuilder();
